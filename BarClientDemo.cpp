@@ -5,6 +5,8 @@
 #include "stdafx.h"
 #include "BarClientDemo.h"
 #include "BarClientDemoDlg.h"
+#include <fstream>
+#include "AdManager.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -55,9 +57,23 @@ BOOL CBarClientDemoApp::InitInstance()
 	// 例如修改为公司或组织名
 	SetRegistryKey(_T("应用程序向导生成的本地应用程序"));
 
+	int port = 0;
+	std::string ip;
+	std::ifstream ifs("config.txt");
+	if (ifs.good())
+		ifs >> ip >> port;
+	else
+		AfxMessageBox("缺少配置文件：config.txt");
+
+	AdManager& adManager = AdManager::getInstance();
+	adManager.setConfig(ip, port, 123456, false, 18888, "trace");
+	adManager.bgnBusiness();
+
 	CBarClientDemoDlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
+
+	adManager.endBusiness();
 	if (nResponse == IDOK)
 	{
 		// TODO: 在此放置处理何时用
