@@ -6,6 +6,8 @@
 #include "BarClientDemo.h"
 #include "BarClientDemoDlg.h"
 #include "afxdialogex.h"
+#include "VideoDlg.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -30,6 +32,7 @@ void CBarClientDemoDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CBarClientDemoDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BUTTON_PLAY, &CBarClientDemoDlg::OnBnClickedButtonPlay)
 END_MESSAGE_MAP()
 
 
@@ -43,8 +46,6 @@ BOOL CBarClientDemoDlg::OnInitDialog()
 	//  执行此操作
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
-
-	// TODO: 在此添加额外的初始化代码
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -85,3 +86,10 @@ HCURSOR CBarClientDemoDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CBarClientDemoDlg::OnBnClickedButtonPlay()
+{
+	CVideoDlg dlg;
+	INT_PTR nResponse = dlg.DoModal();
+}
