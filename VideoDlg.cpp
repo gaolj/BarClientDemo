@@ -7,6 +7,7 @@
 #include "afxdialogex.h"
 #include "AdManager.h"
 #include "player.h"
+#include "cgdiplusbitmap.h"
 
 
 // CVideoDlg 对话框
@@ -17,10 +18,16 @@ CVideoDlg::CVideoDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(IDD_VIDEODLG, pParent)
 {
 	m_pPlayer = NULL;
+	m_bitmap = NULL;
+	m_gdiplusToken = 0;
 }
 
 CVideoDlg::~CVideoDlg()
 {
+	if (m_gdiplusToken)
+		Gdiplus::GdiplusShutdown(m_gdiplusToken);
+	if (m_bitmap)
+		delete m_bitmap;
 }
 
 void CVideoDlg::DoDataExchange(CDataExchange* pDX)
@@ -41,9 +48,6 @@ END_MESSAGE_MAP()
 LRESULT CVideoDlg::OnPlayerEvent(WPARAM pUnkPtr, LPARAM lp)
 {
 	HRESULT hr = m_pPlayer->HandleEvent(pUnkPtr);
-	if (FAILED(hr))
-	{
-	}
 
 	return 0;
 }
@@ -54,9 +58,19 @@ BOOL CVideoDlg::OnInitDialog()
 
 	AdManager& adManager = AdManager::getInstance();
 	m_pPlayer = adManager.setVideoWnd(m_hWnd);
+	if (!m_pPlayer)
+	{
+		Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+		auto status = Gdiplus::GdiplusStartup(&m_gdiplusToken, &gdiplusStartupInput, NULL);
+		if (status != Gdiplus::Status::Ok)
+			AfxMessageBox("Gdiplus 初始化失败!");
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-				  // 异常: OCX 属性页应返回 FALSE
+		std::string strImage =  AdManager::getInstance().getLockImage();
+		m_bitmap = new CGdiPlusBitmapResource;
+		m_bitmap->Load(strImage);
+	}
+
+	return TRUE;  // return TRUE unless you set the focus to a control				  // 异常: OCX 属性页应返回 FALSE
 }
 
 
@@ -79,6 +93,14 @@ void CVideoDlg::OnPaint()
 	{
 		// Video is playing. Ask the player to repaint.
 		m_pPlayer->Repaint();
+	}
+	else if (m_bitmap)
+	{
+		RECT rect;
+		GetClientRect(&rect);
+
+		Gdiplus::Graphics graphics(dc);
+		graphics.DrawImage(*m_bitmap, 0, 0, rect.right, rect.bottom);
 	}
 	else
 	{

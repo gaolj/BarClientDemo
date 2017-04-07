@@ -3,7 +3,7 @@
 
 // CVideoDlg 对话框
 class CPlayer;
-
+class CGdiPlusBitmapResource;
 class CVideoDlg : public CDialogEx
 {
 	DECLARE_DYNAMIC(CVideoDlg)
@@ -12,6 +12,8 @@ public:
 	CVideoDlg(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CVideoDlg();
 	CPlayer *m_pPlayer;
+	CGdiPlusBitmapResource *m_bitmap;
+	ULONG_PTR m_gdiplusToken;
 
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
