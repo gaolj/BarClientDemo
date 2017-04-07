@@ -101,6 +101,7 @@
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>..\AdManager\debug2010;..\AdManager\lib\protobuf-3.2.0\vs2010;D:\Program Files\boost_1_59_0\lib32-msvc-10.0</AdditionalLibraryDirectories>
       <AdditionalOptions>AdManager2010D.lib libprotobufd.lib %(AdditionalOptions)</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
