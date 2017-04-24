@@ -28,6 +28,8 @@ CVideoDlg::~CVideoDlg()
 		Gdiplus::GdiplusShutdown(m_gdiplusToken);
 	if (m_bitmap)
 		delete m_bitmap;
+
+	AdManager::getInstance().closeVideoWnd();	// 释放播放器所占用内存
 }
 
 void CVideoDlg::DoDataExchange(CDataExchange* pDX)
