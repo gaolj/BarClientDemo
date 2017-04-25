@@ -66,7 +66,7 @@ BOOL CBarClientDemoApp::InitInstance()
 		AfxMessageBox("È±ÉÙÅäÖÃÎÄ¼ş£ºconfig.txt");
 
 	AdManager& adManager = AdManager::getInstance();
-	adManager.setConfig(ip, port, 123456, false, 18888, "trace");
+	adManager.setConfig(ip, port, "123456", false, 18888, "trace");
 	adManager.bgnBusiness();
 
 	CBarClientDemoDlg dlg;
